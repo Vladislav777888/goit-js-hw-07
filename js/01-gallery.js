@@ -35,22 +35,24 @@ function onListGalleryClick(event) {
 
   const originalSrc = event.target.dataset.source;
 
-  instance = basicLightbox.create(`<img src="${originalSrc}">`);
+  instance = basicLightbox.create(`<img src="${originalSrc}">`, {
+    closable: true,
+  });
   getModalImageOpen(instance);
 }
 
-function getModalImageOpen(instance) {
+function getModalImageOpen(event) {
   window.addEventListener("keydown", onPressEscape);
-  instance.show();
+  event.show();
 }
 
-function getModalImageClose(instance) {
+function getModalImageClose(event) {
   window.removeEventListener("keydown", onPressEscape);
-  instance.close();
+  event.close();
 }
 
 function onPressEscape(event) {
   if (event.code === "Escape") {
-    getModalImageClose();
+    getModalImageClose(instance);
   }
 }
