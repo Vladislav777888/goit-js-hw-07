@@ -35,24 +35,26 @@ function onListGalleryClick(event) {
 
   const originalSrc = event.target.dataset.source;
 
-  instance = basicLightbox.create(`<img src="${originalSrc}">`, {
-    closable: true,
-  });
-  getModalImageOpen(instance);
-}
-
-function getModalImageOpen(event) {
-  window.addEventListener("keydown", onPressEscape);
-  event.show();
-}
-
-function getModalImageClose(event) {
-  window.removeEventListener("keydown", onPressEscape);
-  event.close();
+  instance = basicLightbox.create(
+    `<img src="${originalSrc}" width="800" height="600">`,
+    {
+      onShow: () => {
+        console.log("Добавили ESC");
+        document.addEventListener("keydown", onPressEscape);
+      },
+      onClose: () => {
+        console.log("Убрали ESC");
+        document.removeEventListener("keydown", onPressEscape);
+      },
+    }
+  );
+  instance.show();
 }
 
 function onPressEscape(event) {
-  if (event.code === "Escape") {
-    getModalImageClose(instance);
+  if (event.key === "Escape") {
+    instance.close(() => {
+      console.log("Закрыли, когда нажали ESC");
+    });
   }
 }
